@@ -1,0 +1,59 @@
+Solidity Version 0.6.12
+
+
+Test Cases:
+
+1- A valid reputer can be associated with several service provider in the same instance, 
+but the system is able to identify each transaction belongs to which requester. Something that other reputation systems do not.
+
+2- Registration of requester done automatically as soon as request intitiated, making it easier for the requester.
+
+Normal Use Case:
+0.1- set gas limit to 9 instead of 3.
+
+
+Test case with Device Service Selection:
+
+
+//////////Initialization Phase/////////////////////////////////////////////////////////////
+1- Deploy ACP
+2- Deploy Objects
+3- Deploy Oracles (ACP Address)
+4- SetOracleContract address (Oracles Address)
+5- setCompContract
+//////////Registration Phase/////////////////////////////////////////////////////////////
+
+6- registerOracle [msg.sender(change address everytime)] //x6 to register 6 oracles
+7- authDev (hashed UID  32 bytes, services 32 bytes) // ex: 0x6c00000000000000000000000000000000000000000000000000000000000000, 0x8b00000000000000000000000000000000000000000000000000000000000000
+8- aggregateRequest (device address, UID bytes 32, HUID bool) // submit for different oracles till authenticated.
+//////////Service Request and fulfillment Phase/////////////////////////////////////////////////////////////
+
+9- serviceRequest(device address, startTimePeriod  uint, endTimePeriod uint, priority uint8) // can cancel request using cancelServiceRequest(device address)
+10- serviceConfirmation (device address, _startTimePeriod uint, _endTimePeriod uint)[done from requester] // 0 if do not need time contraints
+11- executeService( _user address,  _txID  bytes32, _encIPFSHash  bytes32) [done from device]// if not done within specified time range service not accepted
+//////////Review Phase/////////////////////////////////////////////////////////////
+
+12- registerFeed( _dev address,  _feedback uint256,  _txID bytes32,  _equation uint8) [done from requester]
+//////////Post-Review Phase/////////////////////////////////////////////////////////////
+
+13- submitReviewResult ( ID bytes32, entry bytes32)[done from head]
+14- challengeUpload(ID bytes32, entry bytes32) [done from oracle] // can do so after certain period of time
+15- disputeVote(ID bytes32, vote bool , count uint8) //repeat for the selected validators
+
+
+Test case with Automatic service Assignment:
+
+1- Deploy ACP
+2- Deploy Objects
+3- Deploy Oracles (ACP Address)
+4- SetOracleContract address (Oracles Address)
+5- registerOracle [msg.sender(change address everytime)] //x6 to register 6 oracles
+6- authDev (hashed UID  32 bytes, services 32 bytes) // ex: 0x6c00000000000000000000000000000000000000000000000000000000000000
+7- aggregateRequest ( device address, UID bytes 32, HUID bool) // x6 for the 6 oracles
+8- selectDev (device address, _startTimePeriod uint, _endTimePeriod uint)[done from requester] // 0 if do not need time contraints
+9- executeService( _user address,  _txID  bytes32, _encIPFSHash  bytes32) [done from device]// if not done within specified time range service not accepted
+10- registerFeed( _dev address,  _feedback uint256,  _txID bytes32,  _equation uint8) [done from requester]
+11- submitReviewResult
+12- challengeUpload
+
+
