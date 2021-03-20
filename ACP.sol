@@ -75,7 +75,7 @@ contract ACP{
     }
     
     
-    constructor() internal {
+    constructor() public {
         owner = msg.sender;
     }
    
@@ -107,7 +107,7 @@ contract ACP{
         require(device[_dev].registered //check device exists
         && device[_dev].valid[msg.sender].txs[_txID].serviced //service was provided by device
         && device[_dev].valid[msg.sender].valid //check that it is a valid reputer for this device
-        ,"invalid reputation transaction");// check that its a valid transaction for this device
+        ,"Invalid reputation transaction");// check that its a valid transaction for this device
         require(_feedback < 10000 ,"Invalid feedback value");
         //initiate review variables and compute reputation
         uint256 reviewTime= block.timestamp;
@@ -155,7 +155,7 @@ contract ACP{
      
      event serviceDetails(bytes32 ID, uint256 txtime, uint txCount);
 
-     function selectDev(address _requester, uint _startTimePeriod ,uint _endTimePeriod)public isDevice{// avoid duplication
+     function serviceConfirmation(address _requester, uint _startTimePeriod ,uint _endTimePeriod)public isDevice{// avoid duplication
          require(device[msg.sender].valid[_requester].pendingReq == msg.sender, "Invalid Device!");// choose one of the available devices
         address _dev=msg.sender;
         device[_dev].valid[_requester].pendingReq = address(0);
@@ -224,8 +224,9 @@ contract ACP{
 }
 
  contract ComputationMechanisms is ACP{ ///// contract with the computation mechanisms
+    address cmOwner;
     constructor() public isOwner {
-         owner = msg.sender;
+         cmOwner = msg.sender;
     }
     
     function reputationAvgMean(address _dev, uint256 _feedback ) external{

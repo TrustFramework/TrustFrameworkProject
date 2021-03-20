@@ -113,7 +113,7 @@ contract Oracles {
         authDev[_authDev].oracles.push(msg.sender);
         authDev[_authDev].oracResponse[msg.sender] = Objects.OracleResponses(0,_hUID, true);
         if (// if all oracles voted OR half of them did after a certain time period, condition satisfied
-            ((block.timestamp - authDev[_authDev].requestTime) > 10 minutes  &&
+            ((block.timestamp - authDev[_authDev].requestTime) > timeThres  &&
             authDev[_authDev].oracles.length > (oracleAddresses.length / 2)) ||
             authDev[_authDev].oracles.length == oracleAddresses.length
         ) {
@@ -208,7 +208,6 @@ contract Oracles {
                 "User has submitted review, and was added at specified entry."
             );
         reviewPost[_ID].entry = _entry;
-        //TODO: Add incentive mechanism
     }
 
     event validateDispute(bytes32 ID, bytes32 entry);
@@ -242,7 +241,7 @@ contract Oracles {
 
     uint256 disputeTimer;
 
-    function disputeVote(bytes32 _ID, bool _vote, uint8 _count) external isOracle notHead {
+    function disputeVote(bytes32 _ID, bool _vote, uint8 _count) external isOracle notHead { // each oracle assigned a count, submits count and its vote
         require(msg.sender == reviewPost[_ID].validitors[_count],
             " Not eligible to attest!");
         if (reviewPost[_ID].attest + reviewPost[_ID].deny == 0)// timeout starts counting after first vote
