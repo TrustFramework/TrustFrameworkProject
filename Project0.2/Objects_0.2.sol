@@ -64,11 +64,6 @@ library Objects {
         ////////////////////////
         bool valid; // once the service provider accepts the request
         bool serviced; // true only once transaction serviced
-        ////////////////////////post-feedback
-        //uint256 fbTime; // time of feedback
-        //bytes32 reviewID; // ID of transaction feedback
-        //uint256 feedback;
-        //bool reviewed; // registered feedback
     }
 
    
