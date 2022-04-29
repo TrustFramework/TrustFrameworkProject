@@ -2,8 +2,6 @@
 pragma solidity 0.6.12;
 import "./Objects.sol";
 import "./Oracles.sol";
-// Variables everywhere, eliminate the constraints
-// check edge cases
 
 contract ACP{
     Oracles oracleObj;
@@ -15,8 +13,7 @@ contract ACP{
     
     uint256 prevTxTime=now;// keep track of latest transaction
   
-   // add a registered flag so as not to allow duplicate users to execute actions
-   // add modifiers
+
     modifier notDevice {
         require(!device[msg.sender].registered,"User should not be a registered device");
         _;
@@ -141,7 +138,6 @@ contract ACP{
     }
     
      
-     //done
      event serviceReq (address _dev, uint _startTimePeriod,uint _endTimePeriod, uint8 _priority);
      function serviceRequest(address _dev, uint _startTimePeriod,uint _endTimePeriod, uint8 _priority) external notDevice{
          address _requester=msg.sender;
