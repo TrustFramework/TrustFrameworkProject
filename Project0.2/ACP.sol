@@ -78,7 +78,7 @@ contract ACP{
    
 
     bytes32 services;
-    function authDev(bytes32 _uID, bytes32 _services) public notDevice{
+    function authDev(bytes32 _uID, bytes32 _services) public notDevice notOracle{
        services= _services;
        oracleObj.authRequest(msg.sender, _uID);
     }
