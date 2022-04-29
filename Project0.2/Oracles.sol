@@ -79,7 +79,7 @@ contract Oracles {
         acp = ACP(acpAdress);
     }
 
-    ////done
+
     event HUID(address device, bytes32 unique_ID); // this is called in the ACP contract
 
     function authRequest(address _dev, bytes32 _uID) public isACP {
@@ -95,12 +95,9 @@ contract Oracles {
         auth.index = authList.length - 1;
         auth.requestTime = block.timestamp;
         authDev[_dev] = auth;
-    }
+    } 
 
-    //event counter(int256 counter);
-    //emit counter(authDev[_authDev].counter); /*_authDev,*/ 
-
-    ////done //TODO: make sure oracles can not vote more than once
+    
     function aggregateOracleVote(address _authDev, bytes32 _uID, bool _hUID) external isOracle {
         require(authDev[_authDev].exists && authDev[_authDev].UID == _uID,
             "A device with the specified unique identifier is not valid!"
@@ -123,7 +120,7 @@ contract Oracles {
 
     event authStatus(string _status); // update on whether device authenticated or not
 
-    ////done
+    
     function authDevice(address _authDev, bytes32 _uID) internal {
         bool result;
         if (authDev[_authDev].counter > 0) result = true;// set authentication result
